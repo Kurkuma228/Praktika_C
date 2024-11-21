@@ -4,128 +4,89 @@ namespace project
 {
     class HomeWork
     {
-        // 1 задание
-        enum BankAccount
-        {
-            CurrentAccount,
-            SavingsAccount
-        }
-        // 2 задание
-        struct BankInfoAccount
-        {
-            public string number;
-            public string type;
-            public string balance;
-
-            public void Print()
-            { 
-                Console.WriteLine($"Номер счета:{number}\nТип счета:{type}\nБаланс счета:{balance}");
-            }
-        }
-        // 3 задание
-        enum ВУЗ
-        {
-            КГУ,
-            КАИ,
-            КХТИ
-        }
-
-        struct Worker
-        {
-            public string name;
-            public ВУЗ university;
-        }
-        
         static void Main(string[] args)
         {
-            /*Упражнение 3.1 Создать перечислимый тип данных отображающий виды банковского
-            счета(текущий и сберегательный).Создать переменную типа перечисления, присвоить ей
-            значение и вывести это значение на печать.*/
-            Console.WriteLine("Упражнение 3.1");
-            BankAccount account_type = BankAccount.CurrentAccount;
-            Console.WriteLine($"Тип счета: {account_type}");
-
-            /*Упражнение 3.2 Создать структуру данных, которая хранит информацию
-            о банковском счете – его номер, тип и баланс. Создать переменную такого типа,
-            заполнить структуру значениями и напечатать результат.*/
-            Console.WriteLine("Упражнение 3.2");
-            BankInfoAccount bank_info = new BankInfoAccount();
-            Console.WriteLine("Введите номер вашего счета:");
-            bank_info.number = Console.ReadLine();
-            Console.WriteLine("Введите тип вашего счета (сберегательный или текущий):");
-            bank_info.type = Console.ReadLine();
-            Console.WriteLine("Введите баланс вашего счета:");
-            bank_info.balance = Console.ReadLine();
-
-            if (Regex.IsMatch(bank_info.number, @"\d"))
+            /*Упражнение 4.1 Написать программу, которая читает с экрана число от 1 до 365 (номер дня
+            в году), переводит этот число в месяц и день месяца. Например, число 40 соответствует 9
+            февраля (високосный год не учитывать).*/
+            Console.WriteLine("Упражнение 4.1");
+            Console.WriteLine("Введите день года. От 1 до 365");
+            try
             {
-                Console.WriteLine($"Номер счета:{bank_info.number}");
+                short numday = short.Parse(Console.ReadLine());
+                if (numday <= 365 && numday >= 1)
+                {
+                    DateOnly days = DateOnly.FromDayNumber(numday);
+                    Console.WriteLine($"{days:m}");
+                }
+                else
+                {
+                    Console.WriteLine("Число выходит за границы");
+                }
             }
-            else
-            {
-                Console.WriteLine("Номер счета введен неверно");
+            catch (FormatException ex)
+            { 
+                Console.WriteLine(ex.Message);
             }
 
-            if ((bank_info.type.ToLower().Contains("сберегательный")) && (bank_info.type.ToLower().Contains("текущий")))
+            /*Упражнение 4.2 Добавить к задаче из предыдущего упражнения проверку числа введенного
+            пользователем. Если число меньше 1 или больше 365, программа должна вырабатывать
+            исключение, и выдавать на экран сообщение.*/
+            Console.WriteLine("\nУпражнение 4.2");
+            Console.WriteLine("Введите день года. От 1 до 365");
+            try
             {
-                Console.WriteLine($"Тип счета может быть только один");
+                short numday = short.Parse(Console.ReadLine());
+                if (numday <= 365 && numday >= 1)
+                {
+                    DateOnly days = DateOnly.FromDayNumber(numday);
+                    Console.WriteLine($"{days:m}");
+                }
+                else
+                {
+                    Console.WriteLine("Число выходит за границы");
+                }
             }
-            else if ((bank_info.type.ToLower().Contains("сберегательный")))
+            catch (FormatException ex)
             {
-                Console.WriteLine($"Тип счета: Сберегательный");
-            }
-            else if ((bank_info.type.ToLower().Contains("текущий"))) // проблемка
-            {
-                Console.WriteLine($"Тип счета: Текущий");
-            }
-            else
-            {
-                Console.WriteLine("Тип счета введен неверно");
-            }
-
-            if (Regex.IsMatch(bank_info.balance, @"\d"))
-            {
-                Console.WriteLine($"Баланс счета:{bank_info.balance}");
-            }
-            else
-            {
-                Console.WriteLine("Баланс введен неверно");
+                Console.WriteLine(ex.Message);
             }
 
-            /*Домашнее задание 3.1 Создать перечислимый тип ВУЗ{КГУ, КАИ, КХТИ}. Создать
-            структуру работник с двумя полями: имя, ВУЗ. Заполнить структуру данными и
-            распечатать.*/
-            Console.WriteLine("Домашнее задание 3.1");
-            Worker worker = new Worker();
-
-            Console.WriteLine("Введите имя работника");
-            worker.name = Console.ReadLine();
-
-            Console.WriteLine("Введите ВУЗ работника");
-            bool vuz = true;
-
-            switch (Console.ReadLine())
+            /*Домашнее задание 4.1 Изменить программу из упражнений 4.1 и 4.2 так, чтобы она
+            учитывала год (високосный или нет). Год вводится с экрана. (Год високосный, если он
+            делится на четыре без остатка, но если он делится на 100 без остатка, это не високосный
+            год. Однако, если он делится без остатка на 400, это високосный год.)*/
+            Console.WriteLine("\nДомашнее задание 4.1");
+            try
             {
-                case "КГУ":
-                    worker.university = ВУЗ.КГУ;
-                    break;
-                case "КАИ":
-                    worker.university = ВУЗ.КАИ;
-                    break;
-                case "КХТИ":
-                    worker.university = ВУЗ.КХТИ;
-                    break;
-                default:
-                    vuz = false;
-                    break;
+                Console.WriteLine("Введите день года. От 1 до 365");
+                short numday = short.Parse(Console.ReadLine());
+                Console.WriteLine("Введите год");
+                ushort numyear = ushort.Parse(Console.ReadLine());
+                if (numday <= 365 && numday >= 1)
+                {
+                    DateOnly days = DateOnly.FromDayNumber(numday);
+                    if ((numyear % 4 == 0 &&  numyear % 100 != 0) || (numyear % 400 == 0))
+                    {
+                        Console.WriteLine($"{days:m}, {numyear} год високосный");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{days:m}, {numyear} год не високосный");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Число выходит за границы");
+                }
             }
-            if (vuz)
+            catch (FormatException ex)
             {
-                Console.WriteLine($"Имя работника:{worker.name} \nВУЗ работника:{worker.university}");
+                Console.WriteLine(ex.Message);
             }
-            else
+            catch (OverflowException ex)
             {
-                Console.WriteLine("ВУЗ введен неверно или же их нет в списке");
+                Console.WriteLine($"{ex.Message} \nВозможно вы ввели отрицательный год");
             }
         }
     }
