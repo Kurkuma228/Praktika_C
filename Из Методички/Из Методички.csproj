@@ -8,4 +8,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="files\NewFile_8.1.txt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NewFile_8.1.cs</LastGenOutput>
+    </None>
+    <None Update="files\OldFile_8.1.txt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OldFile_8.1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
 </Project>

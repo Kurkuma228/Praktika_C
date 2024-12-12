@@ -52,5 +52,18 @@ namespace ИзМетодички.classes
             Console.WriteLine($"Номер счета: {AccountNumber}\nБаланс счета: {Balance}\nТип счета: {AccType}");
         }
 
+        public void Transfer(BankAccount target, decimal amount)
+        {
+            if (amount <= target.Balance)
+            {
+                Withdraw(amount);
+                target.Deposit(amount);
+                Console.WriteLine($"Перевод выполнен. Баланс вашего счета: {Balance}");
+            }
+            else
+            {
+                Console.WriteLine("На счете недостаточно средств для совершения перевода");
+            }
+        }
     }
 }
