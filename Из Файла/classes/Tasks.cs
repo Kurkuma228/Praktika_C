@@ -1,5 +1,4 @@
-﻿using file;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace Из_Файла.classes
 {
-    public class Tasks
+    internal class Tasks
     {
-        public string Description { get; set; }
-        public TaskType Type { get; set; }
+        string description;
+        public DateTime deadLine;
+        Employee customer;
+        Employee performer;
+        public TaskStatus status;
+        List<Reports> reports;
 
-        public Tasks(string description, TaskType type)
+        public Tasks(string description, DateTime deadLine, Employee customer, Employee performer, TaskStatus status, List<Reports> reports)
         {
-            Description = description;
-            Type = type;
+            this.description = description;
+            this.deadLine = deadLine;
+            this.customer = customer;
+            this.performer = performer;
+            this.status = status;
+            this.reports = reports;
         }
     }
 }

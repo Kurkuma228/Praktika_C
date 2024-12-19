@@ -1,46 +1,70 @@
 ﻿using metodichka;
 using System.Security.AccessControl;
-
+using System.Security.Cryptography.X509Certificates;
 namespace ИзМетодички.classes
 {
     internal class BankAccount
     {
-        ulong AccountNumber;
-        static ulong UniqueAccountNumber;
-        decimal Balance;
-        AccountType AccType;
+        static Guid accountNumber;
+        decimal balance;
+        AccountType accType;
+        Queue<BankTransaction> queue;
 
-        public BankAccount(ulong accountNumber, decimal balance, AccountType accountType)
+        public BankAccount(decimal balance)
         {
-            AccountNumber = accountNumber;
-            Balance = balance;
-            AccType = accountType;
+            this.balance = balance;
+            accountNumber = GenAccountNumber();
+            queue = new Queue<BankTransaction>();
         }
-
-        public ulong accountNumber
+        public BankAccount(AccountType accountType)
         {
-            get { return AccountNumber; }
-            set { AccountNumber = value; }
+            accType = accountType;
+            accountNumber = GenAccountNumber();
+            queue = new Queue<BankTransaction>();
         }
-
+        public BankAccount(decimal balance, AccountType accountType)
+        {
+            this.balance = balance;
+            accType = accountType;
+            accountNumber = GenAccountNumber();
+            queue = new Queue<BankTransaction>();
+        }
         public AccountType accountType
         {
-            get { return  AccType; }
-            set { AccType = value; }
+            get { return accType; }
+            set { accType = accountType; }
         }
-        public void GenAccountNumber()
+        public Guid GenAccountNumber()
         {
-            AccountNumber = UniqueAccountNumber + 1;
+            return Guid.NewGuid();
         }
         public void Deposit(decimal cash)
         {
-            Balance += cash;
+            if (cash >= 0)
+            {
+                balance += cash;
+                BankTransaction unitQueue = new BankTransaction(cash);
+                queue.Enqueue(unitQueue);
+            }
+            else
+            {
+                Console.WriteLine("Нельзя внести отрицательное кол-во денег");
+            }
         }
         public void Withdraw(decimal cash)
         {
-            if (cash < Balance)
+            if (cash < balance)
             {
-                Balance -= cash;
+                if (cash > 0)
+                {
+                    balance -= cash;
+                    BankTransaction unitQueue = new BankTransaction(cash);
+                    queue.Enqueue(unitQueue);
+                }
+                else
+                {
+                    Console.WriteLine("Нельзя снять отрицательное кол-во денег");
+                }
             }
             else
             {
@@ -49,21 +73,41 @@ namespace ИзМетодички.classes
         }
         public void PrintAccBank()
         {
-            Console.WriteLine($"Номер счета: {AccountNumber}\nБаланс счета: {Balance}\nТип счета: {AccType}");
+            Console.WriteLine($"Номер счета: {accountNumber}\nБаланс счета: {balance}\nТип счета: {accType}");
         }
 
         public void Transfer(BankAccount target, decimal amount)
         {
-            if (amount <= target.Balance)
+            if (amount > 0)
             {
-                Withdraw(amount);
-                target.Deposit(amount);
-                Console.WriteLine($"Перевод выполнен. Баланс вашего счета: {Balance}");
+                if (amount <= target.balance)
+                {
+                    Withdraw(amount);
+                    target.Deposit(amount);
+                    Console.WriteLine($"Перевод выполнен. Баланс вашего счета: {balance}");
+                }
+                else
+                {
+                    Console.WriteLine("На счете недостаточно средств для совершения перевода");
+                }
             }
             else
             {
-                Console.WriteLine("На счете недостаточно средств для совершения перевода");
+                Console.WriteLine("Нельзя перевести отрицательное кол-во денег");
             }
+        }
+        public void Dispose()
+        {
+            foreach (BankTransaction t in queue)
+            {
+                File.AppendAllText(@"..\..\..\files\Transactions.txt", $"Сумма: {t.GetAmount()}. Дата и время: {t.GetDateTime()}\n");
+            }
+            GC.SuppressFinalize(queue);
+        }
+        public void PrintFileQueue()
+        {
+            string textQueue = File.ReadAllText(@"..\..\..\files\Transactions.txt");
+            Console.WriteLine(textQueue);
         }
     }
 }

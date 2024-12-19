@@ -8,26 +8,27 @@ namespace ИзМетодички.classes
 {
     internal class Song
     {
-        string? Name;
-        string? Author;
-        Song? PrevSong;
-
-        public void NameSet(string name)
-        {
-            Name = name;
-        }
-        public void AuthorSet(string author)
-        {
-            Author = author;
-        }
-        public void PrevSet(Song prevsong)
-        {
-            PrevSong = prevsong;
-        }
+        string name;
+        string author;
+        Song prevSong;
         
+        public Song() { }
+        public Song(string name, string author)
+        {
+            this.name = name;
+            this.author = author;
+            prevSong = null;
+        }
+        public Song(string name, string author, Song prevSong)
+        {
+            this.name = name;
+            this.author = author;
+            this.prevSong = prevSong;
+        }
+
         public string Title()
         {
-            return $"{Name} - {Author}";
+            return $"{name} - {author}";
         }
         public override bool Equals(object obj)
         {
@@ -38,7 +39,7 @@ namespace ИзМетодички.classes
 
             Song othersong = obj as Song;
 
-            return Name == othersong.Name && Author == othersong.Author;
+            return obj == othersong;
         }
         public override int GetHashCode()
         {

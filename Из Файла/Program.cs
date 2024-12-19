@@ -11,62 +11,74 @@ namespace file
 
         static void Task1()
         {
-            /*На совещании у начальства раздавали задачи. Сотрудники фирмы так задолбались, что
-            решили, что будут получать задачи только в том случае, если это их прямое руководство.
-            Все возмущение началось из‐за того, что бухгалтерия решила автоматизировать себе работу,
-            они хотят приходить на работу, нажимать на кнопочку и чтобы все само делалось, а отдел
-            информационных технологий должен сделать эту задачу им.*/
+            Employee teamlead = new Employee("Игорь");
+            Employee employee2 = new Employee("Михаил");
+            Employee employee3 = new Employee("Алексей");
+            Employee employee4 = new Employee("Василий");
+            Employee employee5 = new Employee("Сергей");
+            Employee employee6 = new Employee("Дарья");
+            Employee employee7 = new Employee("Софья");
+            Employee employee8 = new Employee("Александр");
+            Employee employee9 = new Employee("Екатерина");
+            Employee employee10 = new Employee("Пётр");
 
-            Employee timur = new Employee("Тимур", "Генеральный директор", null);
-            Employee rashid = new Employee("Рашид", "Финансовый директор", new List<Employee> { timur });
-            Employee ilham = new Employee("Ильхам", "Директор по автоматизации", new List<Employee> { timur });
+            List<Tasks> tasks = new List<Tasks>();
+            List<Reports> reports = new List<Reports>();
+            List<Employee> employees = new List<Employee>{ teamlead, employee2, employee3, employee4, employee5, employee6, employee7, employee8, employee9};
 
-            Employee lukas = new Employee("Лукас", "Главный бухгалтер", new List<Employee> { rashid });
+            DateTime dateTime = DateTime.Now;
 
-            Employee arkady = new Employee("Оркадий", "Начальник ИТ отдела", new List<Employee> { ilham });
-            Employee volodya = new Employee("Володя", "Зам. начальника ИТ отдела", new List<Employee> { ilham });
+            Project project = new Project(dateTime.AddMonths(3), "Создать игру на мобильной платформе", "Дядя Вася", teamlead, tasks, ProjectStatus.Проект);
+            
+            Tasks task1 = new Tasks("Нести ответственность за проект", dateTime.AddMonths(3), teamlead, teamlead, TaskStatus.Назначена, reports);
 
-            Employee ilshat = new Employee("Ильшат", "Главный системщик", new List<Employee> { arkady, volodya });
-            Employee ivanych = new Employee("Иваныч", "Зам. системщика", new List<Employee> { ilshat });
-            Employee ilya = new Employee("Илья", "Системщик", new List<Employee> { ivanych });
-            Employee vitia = new Employee("Витя", "Системщик", new List<Employee> { ivanych });
-            Employee zhenya = new Employee("Женя", "Системщик", new List<Employee> { ivanych });
+            Tasks task2 = new Tasks("Создай диздок по игре", dateTime.AddDays(7), teamlead, employee2, TaskStatus.Назначена, reports);
 
-            Employee sergey = new Employee("Сергей", "Главный разработчик", new List<Employee> { arkady, volodya });
-            Employee laisan = new Employee("Ляйсан", "Зам. главного разработчика", new List<Employee> { sergey });
-            Employee marat = new Employee("Марат", "Разработчик", new List<Employee> { laisan });
-            Employee dina = new Employee("Дина", "Разработчик", new List<Employee> { laisan });
-            Employee ildar = new Employee("Ильдар", "Разработчик", new List<Employee> { laisan });
-            Employee anton = new Employee("Антон", "Разработчик", new List<Employee> { laisan });
+            Tasks task3 = new Tasks("Написать сюжет игры", dateTime.AddDays(30), teamlead, employee3, TaskStatus.Назначена, reports);
 
-            Tasks task1 = new Tasks("Диагностика сети", TaskType.SystemAdmins);
-            Tasks task2 = new Tasks("Разработать новую программу", TaskType.Developers); 
-            Tasks task3 = new Tasks("Отдыхать", TaskType.Management);
-            Tasks task4 = new Tasks("Перезагрузка сети", TaskType.SystemAdmins);
+            Tasks task4 = new Tasks("Придумать геймплэй игры", dateTime.AddDays(30), teamlead, employee4, TaskStatus.Назначена, reports);
 
-            AssignTask(task1, ivanych, vitia);
-            AssignTask(task2, sergey, marat);
-            AssignTask(task3, timur, rashid);
-            AssignTask(task4, anton, laisan);
-        }
-        static void AssignTask(Tasks task, Employee fromEmployee, Employee toEmployee)
-        {
-            Console.WriteLine($"\n{fromEmployee.Position} {fromEmployee.Name} дает задачу \"{task.Description}\", типа {task.Type}, сотруднику {toEmployee.Position} {toEmployee.Name}");
+            Tasks task5 = new Tasks("Создать объекты для игры", dateTime.AddDays(60), teamlead, employee5, TaskStatus.Назначена, reports);
 
-            if (toEmployee.TakesTask(fromEmployee))
+            Tasks task6 = new Tasks("Создать персонажей", dateTime.AddDays(30), teamlead, employee6, TaskStatus.Назначена, reports);
+
+            Tasks task7 = new Tasks("Настроить монетизацию", dateTime.AddDays(60), teamlead, employee7, TaskStatus.Назначена, reports);
+
+            Tasks task8 = new Tasks("Настроить сервера", dateTime.AddDays(20), teamlead, employee8, TaskStatus.Назначена, reports);
+
+            Tasks task9 = new Tasks("", dateTime.AddDays(14), teamlead, employee9, TaskStatus.Назначена, reports);
+
+            Tasks task10 = new Tasks("Бета тест", dateTime.AddMonths(3), teamlead, employee10, TaskStatus.Назначена, reports);
+            
+            tasks.Add(task1);
+            tasks.Add(task2);
+            tasks.Add(task3);
+            tasks.Add(task4);
+            tasks.Add(task5);
+            tasks.Add(task6);
+            tasks.Add(task7);
+            tasks.Add(task8);
+            tasks.Add(task9);
+            tasks.Add(task10);
+
+            project.status = ProjectStatus.Исполнение;
+
+            foreach (var task in tasks)
             {
-                Console.WriteLine($"Сотрудник {toEmployee.Name} принимает задачу.");
+                task.status = TaskStatus.В_работе;
             }
-            else
-            {
-                Console.WriteLine($"Сотрудник {toEmployee.Name} не принимает задачу.");
-            }
+            Reports report1 = new Reports("", task1.deadLine, teamlead);
+            Reports report2 = new Reports("", task2.deadLine, employee2);
+            Reports report3 = new Reports("", task3.deadLine, employee3);
+            Reports report4 = new Reports("", task4.deadLine, employee4);
+            Reports report5 = new Reports("", task5.deadLine, employee5);
+            Reports report6 = new Reports("", task6.deadLine, employee6);
+            Reports report7 = new Reports("", task7.deadLine, employee7);
+            Reports report8 = new Reports("", task8.deadLine, employee8);
+            Reports report9 = new Reports("", task9.deadLine, employee9);
+            Reports report10 = new Reports("", task10.deadLine, employee10);
+
+
         }
-    }
-    public enum TaskType
-    {
-        SystemAdmins,
-        Developers,
-        Management
     }
 }
